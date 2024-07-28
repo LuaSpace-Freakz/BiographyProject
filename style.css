@@ -1,0 +1,92 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom right, rgb(22, 22, 22), #14003d);
+}
+
+.container {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr;
+    gap: 20px; 
+    align-items: center;
+    z-index: 100 !important;
+    position: relative;
+}
+
+.box {
+    width: 600px;
+    height: 200px;
+    background-color: #000000de;
+    border: 1px solid #5f5f5f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    z-index: 100 !important;
+    border-radius: 15px;
+}
+
+.circle {
+    width: 175px;
+    height: 175px;
+    background-color: #222222;
+    border: 1px solid #5f5f5f;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    position: absolute !important;
+    top: 112.5px;
+    left: calc(50% - 87.5px); 
+    z-index: 200; 
+}
+
+#banner {
+    border-radius: 15px 15px 0 0;
+    margin-bottom: -10px;
+    overflow: hidden;
+}
+
+#banner img {
+    border-radius: 15px 15px 0 0;
+    width: 100%;
+    height: auto;
+    object-fit: cover; 
+}
+
+#avatar img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#name {
+    border-radius: 0 0 15px 15px;
+    margin-top: -10px;
+    position: relative; 
+    font-size: 50px;
+}
+
+#name::before {
+    content: attr(data-name);
+    position: relative;
+    top: 30px; 
+    font-size: 50px;
+}
