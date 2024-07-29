@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function draw() {
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        context.strokeStyle = 'rgba(255, 0, 0, 0.5)';
         context.beginPath();
         context.arc(mouseX, mouseY, repulsionDistance, 0, Math.PI * 2);
         context.stroke();
