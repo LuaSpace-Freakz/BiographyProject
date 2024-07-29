@@ -1,6 +1,24 @@
 {
-    "banner": "banner.png",
-    "avatar": "avatar.png",
+    "banner": "assets/banner.png",
+    "avatar": "assets/avatar.png",
+    "font": "assets/Font.otf",
+
+    "_comment1": "Your Username which will be shown here:",
     "name": "Freakz",
-    "description": "Dies ist eine Beschreibung."
+
+    "_comment2": "The Lines which will descripe your profile (1-5 lines)",
+    "description": "Freetime Developer",
+    "description2": "HTML, CSS, PYTHON, JS, JAVA, LUA",
+    "description3": "mc.luaspace.de",
+    "description4": "fivem.luaspace.de",
+    "description5": "Owner and Developer of LuaSpace",
+
+    "_comment3": "Paste the links of the Website and it takes the icon of the link",
+    "socialprofile": "", 
+    "socialprofile2": "",
+    "socialprofile3": "",
+    "socialprofile4": "",
+    "socialprofile5": "",
+    "socialprofile6": "",
+    "socialprofile7": ""
 }

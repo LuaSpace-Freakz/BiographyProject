@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function draw() {
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        context.strokeStyle = 'rgba(255, 0, 0, 0.5)'; 
+        context.strokeStyle = 'rgba(255, 0, 0, 0.5)';
         context.beginPath();
         context.arc(mouseX, mouseY, repulsionDistance, 0, Math.PI * 2);
         context.stroke();
@@ -157,8 +157,89 @@ fetch("./config.json")
         name.setAttribute('data-name', data.name);
 
         const description = document.getElementById('description');
-        description.textContent = data.description;
+        description.innerHTML = ''; 
+
+        const descriptions = [];
+        for (let i = 1; i <= 5; i++) {
+            const key = `description${i === 1 ? '' : i}`;
+            if (data[key] && data[key].trim() !== '') {
+                descriptions.push(data[key]);
+            }
+        }
+
+        function typeEffect(element, text, callback) {
+            let i = 0;
+            const interval = setInterval(() => {
+                element.textContent += text.charAt(i);
+                i++;
+                if (i === text.length) {
+                    clearInterval(interval);
+                    element.classList.remove('typing');
+                    if (callback) callback();
+                }
+            }, 100); 
+        }
+
+        function startTypingEffect(descriptions, index = 0) {
+            if (index < descriptions.length) {
+                const p = document.createElement('p');
+                p.classList.add('typing');
+                description.appendChild(p);
+                typeEffect(p, descriptions[index], () => {
+                    startTypingEffect(descriptions, index + 1);
+                });
+            }
+        }
+
+        startTypingEffect(descriptions);
+
+        const socialMediaContainer = document.getElementById('social-media');
+        socialMediaContainer.innerHTML = ''; 
+
+        const urlPattern = new RegExp('^(https?:\\/\\/)?'+ 
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ 
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ 
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ 
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ 
+            '(\\#[-a-z\\d_]*)?$','i'); 
+
+        for (let i = 1; i <= 7; i++) {
+            const key = `socialprofile${i === 1 ? '' : i}`;
+            if (data[key] && data[key].trim() !== '' && urlPattern.test(data[key])) {
+                let url = data[key];
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'http://' + url;
+                }
+                const faviconUrl = new URL(url).origin + '/favicon.ico';
+                
+                const a = document.createElement('a');
+                a.href = data[key];
+                a.target = "_blank"; 
+                a.style.backgroundImage = `url(${faviconUrl})`;
+
+                socialMediaContainer.appendChild(a);
+            }
+        }
+
+        const style = document.createElement('style');
+        style.type = 'text/css';
+        const fontFace = `
+            @font-face {
+                font-family: 'CustomFont';
+                src: url('${data.font}') format('opentype');
+                font-weight: normal;
+                font-style: normal;
+            }
+            body {
+                font-family: 'CustomFont', sans-serif;
+            }
+            #name::before {
+                font-family: 'CustomFont', sans-serif;
+            }
+        `;
+        style.appendChild(document.createTextNode(fontFace));
+        document.head.appendChild(style);
     })
     .catch(function (error) {
         console.error('Error loading config:', error);
-});
+    });

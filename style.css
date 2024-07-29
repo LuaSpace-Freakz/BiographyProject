@@ -5,6 +5,12 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #background {
@@ -44,7 +50,7 @@ body, html {
     width: 175px;
     height: 175px;
     background-color: #222222;
-    border: 1px solid #5f5f5f;
+    border: 2px solid #5f5f5f;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -53,8 +59,9 @@ body, html {
     font-size: 18px;
     position: absolute !important;
     top: 112.5px;
-    left: calc(50% - 87.5px); 
-    z-index: 200; 
+    left: 50%; 
+    transform: translateX(-50%);
+    z-index: 200;
 }
 
 #banner {
@@ -89,4 +96,60 @@ body, html {
     position: relative;
     top: 30px; 
     font-size: 50px;
+}
+
+#description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    height: auto; 
+    padding-top: 25px;
+    padding-bottom: 25px;
+    font-size: 15px;
+}
+
+.typing {
+    border-right: .15em solid white;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: 
+        blink-caret .75s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: white; }
+}
+
+#description p {
+    margin: 0; 
+    padding: 5px 0; 
+}
+
+#social-media {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin-top: -50px; 
+    z-index: 10000;
+}
+
+.socials a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #222222;
+    border: 1px solid #5f5f5f;
+    border-radius: 50%;
+    margin: 0 10px; 
+    text-align: center;
+    line-height: 36px; 
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    background-size: contain; 
+    background-position: center;
+    background-repeat: no-repeat;
 }
