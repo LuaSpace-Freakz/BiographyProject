@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const loadingText = document.getElementById('loading-text');
     const canvas = document.getElementById('background');
     const context = canvas.getContext('2d');
 
@@ -46,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function draw() {
         context.clearRect(0, 0, canvas.width, canvas.height);
 
+        context.strokeStyle = 'rgba(255, 0, 0, 0.5)';
         context.beginPath();
         context.arc(mouseX, mouseY, repulsionDistance, 0, Math.PI * 2);
         context.stroke();
@@ -139,69 +142,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draw();
-});
 
-fetch("./config.json")
-    .then(function (res) {
-        return res.json();
-    })
-    .then(function (data) {
-        const bannerImage = document.getElementById('bannerImage');
-        bannerImage.src = data.banner;
+    function startTypingEffect(descriptions, index = 0) {
+        if (index < descriptions.length) {
+            const p = document.createElement('p');
+            p.classList.add('typing');
+            description.appendChild(p);
+            typeEffect(p, descriptions[index], () => {
+                startTypingEffect(descriptions, index + 1);
+            });
+        }
+    }
 
-        const avatarImage = document.getElementById('avatarImage');
-        avatarImage.src = data.avatar;
-
-        const name = document.getElementById('name');
-        name.setAttribute('data-name', data.name);
-
-        const description = document.getElementById('description');
-        description.innerHTML = ''; 
-
-        const descriptions = [];
-        for (let i = 1; i <= 5; i++) {
-            const key = `description${i === 1 ? '' : i}`;
-            if (data[key] && data[key].trim() !== '') {
-                descriptions.push(data[key]);
+    function typeEffect(element, text, callback) {
+        let i = 0;
+        const interval = setInterval(() => {
+            element.textContent += text.charAt(i);
+            i++;
+            if (i === text.length) {
+                clearInterval(interval);
+                element.classList.remove('typing');
+                if (callback) callback();
             }
-        }
+        }, 100); 
+    }
 
-        function typeEffect(element, text, callback) {
-            let i = 0;
-            const interval = setInterval(() => {
-                element.textContent += text.charAt(i);
-                i++;
-                if (i === text.length) {
-                    clearInterval(interval);
-                    element.classList.remove('typing');
-                    if (callback) callback();
-                }
-            }, 100); 
-        }
-
-        function startTypingEffect(descriptions, index = 0) {
-            if (index < descriptions.length) {
-                const p = document.createElement('p');
-                p.classList.add('typing');
-                description.appendChild(p);
-                typeEffect(p, descriptions[index], () => {
-                    startTypingEffect(descriptions, index + 1);
-                });
-            }
-        }
-
-        startTypingEffect(descriptions);
-
+    async function fetchSocialProfiles(data) {
         const socialMediaContainer = document.getElementById('social-media');
-        socialMediaContainer.innerHTML = ''; 
-
+        socialMediaContainer.innerHTML = '';
+    
         const urlPattern = new RegExp('^(https?:\\/\\/)?'+ 
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ 
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+
             '((\\d{1,3}\\.){3}\\d{1,3}))'+ 
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ 
-            '(\\?[;&a-z\\d%_.~+=-]*)?'+ 
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+@]*)*'+
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+
             '(\\#[-a-z\\d_]*)?$','i'); 
-
+    
+        const socialLinks = [];
+    
         for (let i = 1; i <= 7; i++) {
             const key = `socialprofile${i === 1 ? '' : i}`;
             if (data[key] && data[key].trim() !== '' && urlPattern.test(data[key])) {
@@ -209,36 +187,169 @@ fetch("./config.json")
                 if (!url.startsWith('http://') && !url.startsWith('https://')) {
                     url = 'http://' + url;
                 }
-                const faviconUrl = new URL(url).origin + '/favicon.ico';
-                
-                const a = document.createElement('a');
-                a.href = data[key];
-                a.target = "_blank"; 
-                a.style.backgroundImage = `url(${faviconUrl})`;
-
-                socialMediaContainer.appendChild(a);
+    
+                const faviconUrl = `https://api.faviconkit.com/${new URL(url).hostname}/64`;
+    
+                try {
+                    await loadImage(faviconUrl);
+                    const a = document.createElement('a');
+                    a.href = data[key];
+                    a.target = "_blank"; 
+                    a.style.backgroundImage = `url(${faviconUrl})`;
+                    a.style.backgroundSize = 'cover';
+                    socialMediaContainer.appendChild(a);
+                    socialLinks.push(a); 
+                } catch (error) {
+                    console.error('Favicon not found for:', url);
+                }
+            } else {
+                console.error('Invalid URL:', data[key]);
             }
         }
+        return socialLinks;
+    }
+    
+    function loadImage(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(url);
+            img.onerror = reject;
+            img.src = url;
+        });
+    }    
 
-        const style = document.createElement('style');
-        style.type = 'text/css';
-        const fontFace = `
-            @font-face {
-                font-family: 'CustomFont';
-                src: url('${data.font}') format('opentype');
-                font-weight: normal;
-                font-style: normal;
+    function loadContent() {
+        fetch("./config.json")
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
+                const bannerImage = document.getElementById('bannerImage');
+                bannerImage.src = data.banner;
+    
+                const avatarImage = document.getElementById('avatarImage');
+                avatarImage.src = data.avatar;
+    
+                const name = document.getElementById('name');
+                name.setAttribute('data-name', data.name);
+    
+                const description = document.getElementById('description');
+                description.innerHTML = ''; 
+    
+                const descriptions = [];
+                for (let i = 1; i <= 5; i++) {
+                    const key = `description${i === 1 ? '' : i}`;
+                    if (data[key] && data[key].trim() !== '') {
+                        descriptions.push(data[key]);
+                    }
+                }
+    
+                fetchSocialProfiles(data).then(() => {
+                    adjustForMobile();
+                });    
+    
+                const style = document.createElement('style');
+                style.type = 'text/css';
+                const fontFace = `
+                    @font-face {
+                        font-family: 'CustomFont';
+                        src: url('${data.font}') format('opentype');
+                        font-weight: normal;
+                        font-style: normal;
+                    }
+                    body {
+                        font-family: 'CustomFont', sans-serif;
+                    }
+                    #name::before {
+                        font-family: 'CustomFont', sans-serif;
+                    }
+                `;
+                style.appendChild(document.createTextNode(fontFace));
+                document.head.appendChild(style);
+    
+                if (data.blurText) {
+                    loadingText.textContent = data.blurText;
+                }
+    
+                const websiteIcon = document.getElementById('websiteIcon');
+                websiteIcon.href = data.icon;
+    
+                startTypingEffect(descriptions);
+    
+                loadingOverlay.addEventListener('click', () => {
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                    }, 500);
+                });
+            })
+            .catch(function (error) {
+                console.error('Error loading config:', error);
+            });
+    }
+    
+    function adjustForMobile() {
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                box.style.width = 'calc(100% - 100px)';
+                box.style.marginLeft = '50px';
+            });
+    
+            const socialMediaContainer = document.getElementById('social-media');
+            if (socialMediaContainer) {
+                const currentMarginTop = parseFloat(window.getComputedStyle(socialMediaContainer).marginTop);
+                socialMediaContainer.style.marginTop = (currentMarginTop * 1.15) + 'px';
+                socialMediaContainer.style.gap = '15px';
+                const socialLinks = socialMediaContainer.querySelectorAll('a');
+                if (socialLinks.length > 0) {
+                    socialLinks.forEach(social => {
+                        const currentWidth = parseFloat(window.getComputedStyle(social).width);
+                        const currentHeight = parseFloat(window.getComputedStyle(social).height);
+                        if (!isNaN(currentWidth) && !isNaN(currentHeight)) {
+                            social.style.width = (currentWidth * 1.5) + 'px';
+                            social.style.height = (currentHeight * 1.5) + 'px';
+                        } else {
+                            console.error(`Invalid dimensions for ${social}`); 
+                        }
+                    });
+                } else {
+                    console.log("No social links found");
+                }
             }
-            body {
-                font-family: 'CustomFont', sans-serif;
+
+            const description = document.getElementById('description');
+            if (description) {
+                const currentFontSize = parseFloat(window.getComputedStyle(description).fontSize);
+                if (!isNaN(currentFontSize)) {
+                    description.style.fontSize = (currentFontSize * 1.4) + 'px';
+                } else {
+                    console.error(`Invalid font size for #description`);
+                }
             }
-            #name::before {
-                font-family: 'CustomFont', sans-serif;
-            }
-        `;
-        style.appendChild(document.createTextNode(fontFace));
-        document.head.appendChild(style);
-    })
-    .catch(function (error) {
-        console.error('Error loading config:', error);
-    });
+
+            const name = document.getElementById('name');
+            if (name) {
+                const currentPaddingTop = parseFloat(window.getComputedStyle(name).paddingTop);
+                const currentPaddingBottom = parseFloat(window.getComputedStyle(name).paddingBottom);
+                name.style.paddingTop = (currentPaddingTop + 10) + 'px';
+                name.style.paddingBottom = (currentPaddingBottom + 10) + 'px';
+    
+                const currentTop = parseFloat(window.getComputedStyle(name, '::before').top);
+                if (!isNaN(currentTop)) {
+                    name.style.setProperty('--name-top', (currentTop * 0.95) + 'px');
+                } else {
+                    console.error(`Invalid top value for #name::before`);
+                }
+            }    
+        }
+    }
+    
+    
+    window.addEventListener('load', () => {
+        loadContent();
+        adjustForMobile();
+        loadingOverlay.style.opacity = '1';
+        loadingText.style.opacity = '1';
+    });    
+});

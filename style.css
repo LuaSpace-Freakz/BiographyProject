@@ -26,7 +26,7 @@ body, html {
     display: grid;
     grid-template-rows: auto auto auto;
     grid-template-columns: 1fr;
-    gap: 20px; 
+    gap: 10px; 
     align-items: center;
     z-index: 100 !important;
     position: relative;
@@ -94,7 +94,7 @@ body, html {
 #name::before {
     content: attr(data-name);
     position: relative;
-    top: 30px; 
+    top: var(--name-top, 40px); 
     font-size: 50px;
 }
 
@@ -132,11 +132,11 @@ body, html {
     display: flex;
     justify-content: center; 
     align-items: center;
-    margin-top: -50px; 
+    margin-top: -32.5px; 
     z-index: 10000;
 }
 
-.socials a {
+#social-media a {
     display: inline-block;
     width: 40px;
     height: 40px;
@@ -152,4 +152,31 @@ body, html {
     background-size: contain; 
     background-position: center;
     background-repeat: no-repeat;
+}
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(25px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+#loading-text {
+    color: white;
+    font-size: 24px;
+    animation: fadeInOut 1s infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }

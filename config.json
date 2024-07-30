@@ -1,17 +1,18 @@
 {
     "banner": "assets/banner.png",
     "avatar": "assets/avatar.png",
-    "font": "assets/Font.otf",
+    "icon": "assets/avatar.png",
+    "font": "assets/font.otf",
 
-    "_comment1": "Your Username which will be shown here:",
-    "name": "Freakz",
+    "_comment1": "Your Username which will be shown here",
+    "name": "",
 
     "_comment2": "The Lines which will descripe your profile (1-5 lines)",
-    "description": "Freetime Developer",
-    "description2": "HTML, CSS, PYTHON, JS, JAVA, LUA",
-    "description3": "mc.luaspace.de",
-    "description4": "fivem.luaspace.de",
-    "description5": "Owner and Developer of LuaSpace",
+    "description": "",
+    "description2": "",
+    "description3": "",
+    "description4": "",
+    "description5": "",
 
     "_comment3": "Paste the links of the Website and it takes the icon of the link",
     "socialprofile": "", 
@@ -20,5 +21,8 @@
     "socialprofile4": "",
     "socialprofile5": "",
     "socialprofile6": "",
-    "socialprofile7": ""
+    "socialprofile7": "",
+
+    "_comment4": "This is the text that comes up inside the blur effect when you load the website",
+    "blurText": ""
 }
