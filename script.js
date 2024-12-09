@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('background');
     const context = canvas.getContext('2d');
 
+    // Build in config here!
     const pointCount = 100;
     const maxDistance = 175;
     const repulsionDistance = 110;
