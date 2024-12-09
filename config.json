@@ -25,4 +25,14 @@
 
     "_comment4": "This is the text that comes up inside the blur effect when you load the website",
     "blurText": ""
+
+    "_comment5": "Paste the file names of the songs (up to 5) located in the assets folder. You can add song{number}author or song{number}name to manually add an author or name, otherwise it will try to get it from the metadatas",
+    "song1": "",
+    "song1author": "",
+    "song1name": "",
+    "song2": "",
+    "song3": "",
+    "song4": "",
+    "song5": "",
+    "song6": ""
 }
