@@ -1,21 +1,24 @@
 {
-    "banner": "assets/banner.png",
-    "avatar": "assets/avatar.png",
-    "icon": "assets/avatar.png",
-    "font": "assets/font.otf",
+    "assetsFolder": "assets/",
 
-    "_comment1": "Your Username which will be shown here",
-    "name": "",
+    "banner": "banner.webp",
+    "avatar": "avatar.webp",
+    "icon": "avatar.webp",
+    "font": "font.otf",
+    "title": "example's Bio",
 
-    "_comment2": "The Lines which will descripe your profile (1-5 lines)",
-    "description": "",
-    "description2": "",
-    "description3": "",
-    "description4": "",
-    "description5": "",
+    "_comment1": "The username that will be shown",
+    "name": "example",
 
-    "_comment3": "Paste the links of the Website and it takes the icon of the link",
-    "socialprofile": "", 
+    "_comment2": "The Lines which will describe your profile (1-5 lines)",
+    "description": "this is the first example description line",
+    "description2": "this is the second example description line",
+    "description3": "this is the third example description line",
+    "description4": "this is the fourth example description line",
+    "description5": "this is the fith example description line",
+
+    "_comment3": "Paste the links of the Website and it takes the icon of the link. If it can't fetch the favicon, you can add socialprofile{number}image",
+    "socialprofile": "https://example.com",
     "socialprofile2": "",
     "socialprofile3": "",
     "socialprofile4": "",
@@ -24,15 +27,48 @@
     "socialprofile7": "",
 
     "_comment4": "This is the text that comes up inside the blur effect when you load the website",
-    "blurText": ""
+    "blurText": "click to continue",
 
-    "_comment5": "Paste the file names of the songs (up to 5) located in the assets folder. You can add song{number}author or song{number}name to manually add an author or name, otherwise it will try to get it from the metadatas",
-    "song1": "",
-    "song1author": "",
-    "song1name": "",
+    "_comment5": "Folder path for the songs is now managed by assetsFolder. You can add song{number}author or song{number}name if those aren't given in the metadatas",
+    "song1": "example.mp3",
+    "song1author": "example author",
+    "song1name": "example name",
     "song2": "",
     "song3": "",
     "song4": "",
     "song5": "",
-    "song6": ""
+    "song6": "",
+
+    "_comment6": "Volume level for the music player (1-100)",
+    "volume": 20,
+
+    "_comment7": "If you want a custom cursor, add the path here. e.g. 'cursor.cur'. If empty, use default cursor.",
+    "cursor": "",
+
+    "_comment8": "Enable or disable sparkles from the cursor (true/false)",
+    "sparkles": true,
+
+    "_comment9": "Background settings for the animated points",
+    "background": {
+        "_commentBasePointCount": "Base number of points (adjusted based on scaling)",
+        "basePointCount": 100,
+
+        "_commentMaxDistance": "Maximum distance for connections between points",
+        "maxDistance": 175,
+
+        "_commentRepulsionDistance": "Distance at which the mouse repels points",
+        "repulsionDistance": 150,
+
+        "_commentMaxSpeed": "Maximum speed of points",
+        "maxSpeed": 4.0,
+
+        "_commentBaseSpeed": "Base speed of points",
+        "baseSpeed": 2.0,
+
+        "_commentAcceleration": "How quickly points accelerate",
+        "acceleration": 0.5,
+
+        "_commentDeceleration": "How quickly points decelerate",
+        "deceleration": 0.3
+    }
 }
